@@ -1,1 +1,1 @@
-# HackToLive-CTF-2026
+# HackToLive CTF 2026
