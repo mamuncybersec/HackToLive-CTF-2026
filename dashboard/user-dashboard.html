@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - HackToLive CTF</title>
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0d1f3c 0%, #1a2e5c 30%, #2a5298 60%, #1a3a52 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Dashboard Hero Section */
+        .dashboard-hero {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 3px solid #00ff00;
+            box-shadow: 0 10px 50px rgba(0, 255, 0, 0.4);
+            margin-top: 20px;
+        }
+
+        .dashboard-hero h1 {
+            font-size: 2.8em;
+            text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00; }
+            50% { text-shadow: 0 0 30px #00ff00, 0 0 50px #00ff00; }
+        }
+
+        .dashboard-hero p {
+            color: #00ff00;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff5555 0%, #ff3333 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 85, 85, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 85, 85, 0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c5ce7 0%, #5f3dc4 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.5);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 255, 0, 0.1);
+            margin-bottom: 40px;
+            border: 2px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
+            border: 5px solid #fff;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h2 {
+            font-size: 2.2em;
+            color: #0d1f3c;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-info h3 {
+            font-size: 2em;
+            color: #0d1f3c;
+            margin-bottom: 10px;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .meta-icon {
+            color: #00ff00;
+            font-size: 1.2em;
+        }
+
+        /* Profile Actions */
+        .profile-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            border-color: #00ff00;
+            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+            background: linear-gradient(135deg, #fff 0%, #f0fff0 100%);
+        }
+
+        .action-icon {
+            font-size: 2em;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            border-radius: 10px;
+            color: #000;
+        }
+
+        .action-content h3 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #0d1f3c;
+        }
+
+        .action-content p {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Stats Grid */
+        .stats-section {
+            margin-bottom: 40px;
+            max-width: 100%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 100%;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            border-left: 5px solid #00ff00;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.1), transparent);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 35px rgba(0, 255, 0, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-title {
+            color: #555;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-icon {
+            font-size: 1.8em;
+            opacity: 0.3;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0d1f3c;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.85em;
+        }
+
+        /* Challenges Section */
+        .challenges-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 255, 0, 0.1);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.8em;
+            color: #0d1f3c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .challenge-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .challenge-item {
+            background: linear-gradient(135deg, #fff 0%, #fafafa 100%);
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid rgba(0, 255, 0, 0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+
+        .challenge-item:hover {
+            transform: translateY(-5px);
+            border-color: #00ff00;
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.3);
+        }
+
+        .challenge-item h4 {
+            color: #0d1f3c;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .challenge-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            color: #000;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .empty-state p {
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-hero h1 {
+                font-size: 2em;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-info {
+                text-align: center;
+            }
+
+            .profile-info h3 {
+                font-size: 1.5em;
+            }
+
+            .profile-meta {
+                justify-content: center;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .challenge-list {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .challenge-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00cc00);
+            border-radius: 10px;
+            transition: width 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../index.html"><img src="../images/main-logo.png" alt="HackToLive Logo" class="logo"></a>
+        <nav id="mainNav">
+            <a href="../pages/announcements.html">Announcements</a>
+            <a href="../pages/howitworks.html">How It Works</a>
+            <a href="../pages/resources.html">Learning Resources</a>
+            <a href="../pages/rules.html">Rules</a>
+            <a href="../pages/challenges.html">Challenges</a>
+            <a href="../pages/contact.html">Contact</a>
+        </nav>
+        <div class="auth-links">
+            <a href="../auth/login.html" class="btn small">Login</a>
+            <a href="../auth/register.html" class="btn small">Register</a>
+        </div>
+    </header>
+
+    <div class="dashboard-hero">
+        <h1>👤 User Dashboard</h1>
+        <p>Monitor your progress and track your achievements</p>
+    </div>
+
+    <div class="container">
+        <!-- Statistics Grid -->
+        <div class="stats-section">
+            <div class="section-header" style="background: transparent; padding: 0 0 15px 0; margin-bottom: 25px;">
+                <h2 style="color: #fff;">📊 Your Statistics</h2>
+            </div>
+            <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Points</span>
+                    <span class="stat-icon">🎯</span>
+                </div>
+                <div class="stat-value" id="totalPoints">0</div>
+                <div class="stat-label">Points earned</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="pointsProgress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Challenges Solved</span>
+                    <span class="stat-icon">✅</span>
+                </div>
+                <div class="stat-value" id="challengesSolved">0</div>
+                <div class="stat-label">Out of 12 total</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="challengesProgress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Current Rank</span>
+                    <span class="stat-icon">🏅</span>
+                </div>
+                <div class="stat-value" id="userRank">#-</div>
+                <div class="stat-label">Global ranking</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Completion</span>
+                    <span class="stat-icon">📊</span>
+                </div>
+                <div class="stat-value" id="completionRate">0%</div>
+                <div class="stat-label">Overall progress</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="completionProgress" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Solved Challenges Section -->
+        <div class="challenges-section">
+            <div class="section-header">
+                <h2>🏆 Solved Challenges</h2>
+            </div>
+            <div class="challenge-list" id="challengeList">
+                <!-- Challenges will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // All challenge definitions
+        const allChallenges = [
+            { id: 1, title: 'Web Exploitation', url: '../challenges/web-exploitation.html', category: 'Web', difficulty: 'Easy' },
+            { id: 2, title: 'Cryptography', url: '../challenges/cryptography.html', category: 'Crypto', difficulty: 'Medium' },
+            { id: 3, title: 'Binary Exploitation', url: '../challenges/binary-exploitation.html', category: 'Binary', difficulty: 'Hard' },
+            { id: 4, title: 'Forensics', url: '../challenges/forensics.html', category: 'Forensics', difficulty: 'Medium' },
+            { id: 5, title: 'Reverse Engineering', url: '../challenges/reverse-engineering.html', category: 'Reverse', difficulty: 'Hard' },
+            { id: 6, title: 'Mobile Security', url: '../challenges/mobile-security.html', category: 'Mobile', difficulty: 'Hard' },
+            { id: 7, title: 'Network Security', url: '../challenges/network-security.html', category: 'Network', difficulty: 'Hard' },
+            { id: 8, title: 'Password Cracking', url: '../challenges/password-cracking.html', category: 'Password', difficulty: 'Medium' },
+            { id: 9, title: 'Privilege Escalation', url: '../challenges/privilege-escalation.html', category: 'Privilege', difficulty: 'Hard' },
+            { id: 10, title: 'Social Engineering', url: '../challenges/social-engineering.html', category: 'Social', difficulty: 'Medium' },
+            { id: 11, title: 'SQL Injection', url: '../challenges/sql-injection.html', category: 'Web', difficulty: 'Easy' },
+            { id: 12, title: 'Steganography', url: '../challenges/steganography.html', category: 'Stego', difficulty: 'Easy' }
+        ];
+
+        // Get current user
+        function getUser() {
+            let u = sessionStorage.getItem('ctfUser');
+            if (!u) {
+                window.location.href = '../auth/login.html';
+                return null;
+            }
+            return u;
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('ctfUser');
+                window.location.href = '../auth/login.html';
+            }
+        }
+
+        // Show account information modal
+        function showAccountInfo() {
+            const username = getUser();
+            if (!username) return;
+
+            const reg = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
+            const userInfo = reg[username] || {};
+
+            const info = `
+                📋 ACCOUNT INFORMATION
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                👤 Username: ${username}
+                📛 Full Name: ${userInfo.name || 'Not set'}
+                📧 Email: ${userInfo.email || 'Not set'}
+                🎂 Age: ${userInfo.age || 'Not set'}
+                🏙️ City: ${userInfo.city || 'Not set'}
+                📅 Registered: ${userInfo.registeredDate || 'Unknown'}
+                ━━━━━━━━━━━━━━━━━━━━━━━
+            `;
+            alert(info);
+        }
+
+        // Show settings modal
+        function showSettings() {
+            const settings = `
+                ⚙️ SETTINGS
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                
+                Available Settings:
+                
+                🔔 Notifications: Enabled
+                🎨 Theme: Dark Mode
+                🔒 Privacy: Public Profile
+                📊 Show Stats: Visible
+                
+                To modify settings, visit your profile page.
+                ━━━━━━━━━━━━━━━━━━━━━━━
+            `;
+            alert(settings);
+        }
+
+        // Calculate user rank
+        function calculateRank(username, points) {
+            const users = JSON.parse(localStorage.getItem('ctfUsers') || '{}');
+            const allUsers = Object.entries(users).map(([user, data]) => ({
+                user,
+                points: data.points || 0
+            }));
+            
+            allUsers.sort((a, b) => b.points - a.points);
+            
+            const rank = allUsers.findIndex(u => u.user === username) + 1;
+            return rank > 0 ? rank : '-';
+        }
+
+        // Get member since date
+        function getMemberSince(username) {
+            const reg = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
+            const userInfo = reg[username];
+            if (userInfo && userInfo.registeredDate) {
+                return new Date(userInfo.registeredDate).toLocaleDateString('en-US', {
+                    month: 'short',
+                    year: 'numeric'
+                });
+            }
+            return 'Recently';
+        }
+
+        // Render dashboard
+        function renderDashboard() {
+            const username = getUser();
+            if (!username) return;
+
+            // Get user data
+            const users = JSON.parse(localStorage.getItem('ctfUsers') || '{}');
+            const userData = users[username] || { solved: [], points: 0 };
+            const reg = JSON.parse(localStorage.getItem('registeredUsers') || '{}');
+            const userInfo = reg[username] || {};
+
+            // Profile section removed - now using profile widget in header
+            const name = userInfo.name || username;
+            
+            // Update statistics
+            const totalPoints = userData.points || 0;
+            const solvedCount = userData.solved.length;
+            const totalChallenges = allChallenges.length;
+            const completionRate = Math.round((solvedCount / totalChallenges) * 100);
+            const rank = calculateRank(username, totalPoints);
+
+            document.getElementById('totalPoints').textContent = totalPoints;
+            document.getElementById('challengesSolved').textContent = solvedCount;
+            document.getElementById('userRank').textContent = '#' + rank;
+            document.getElementById('completionRate').textContent = completionRate + '%';
+
+            // Update progress bars with animation
+            setTimeout(() => {
+                const maxPoints = 1450; // Total possible points
+                document.getElementById('pointsProgress').style.width = Math.min((totalPoints / maxPoints) * 100, 100) + '%';
+                document.getElementById('challengesProgress').style.width = (solvedCount / totalChallenges) * 100 + '%';
+                document.getElementById('completionProgress').style.width = completionRate + '%';
+            }, 100);
+
+            // Render solved challenges
+            const challengeList = document.getElementById('challengeList');
+            if (solvedCount > 0) {
+                const solvedChallenges = userData.solved.map(id => {
+                    const challenge = allChallenges.find(c => c.id === id);
+                    if (challenge) {
+                        return `
+                            <a href="${challenge.url}" class="challenge-item">
+                                <h4>🎯 ${challenge.title}</h4>
+                                <p style="color: #666; margin: 10px 0; font-size: 0.9em;">${challenge.category}</p>
+                                <span class="challenge-badge">✅ Completed</span>
+                            </a>
+                        `;
+                    }
+                    return '';
+                }).join('');
+                challengeList.innerHTML = solvedChallenges;
+            } else {
+                challengeList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <h3>No Challenges Solved Yet</h3>
+                        <p>Start solving challenges to see them here!</p>
+                        <a href="../pages/challenges.html" class="btn btn-primary" style="margin-top: 20px;">Browse Challenges</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize dashboard on page load
+        window.addEventListener('DOMContentLoaded', renderDashboard);
+    </script>
+    <script src="../js/profile-widget.js"></script>
+</body>
+</html>

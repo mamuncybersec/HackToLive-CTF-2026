@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login - HackToLive CTF</title>
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../styles.css">
+    <style>.login-container{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}form{background:rgba(0,0,0,0.8);padding:20px;border-radius:10px;box-shadow:0 0 20px rgba(0,255,0,0.4);width:450px}h2{margin-bottom:15px;text-align:center;color:#00ff00}input[type=text],input[type=password]{width:100%;padding:8px;margin:5px 0;border:1px solid #00ff00;border-radius:4px;background:#222;color:#fff}label{display:block;margin-top:8px}button{width:100%;padding:10px;background:#00ff00;color:#000;border:none;border-radius:4px;font-weight:bold;cursor:pointer;transition:0.3s}button:hover{background:#00cc00}small{color:#f88}form a{color:#00ff00;text-decoration:none;font-size:0.9em;display:block;text-align:center;margin-top:10px}</style>
+</head>
+<body>
+    <header>
+        <a href="../index.html"><img src="../images/main-logo.png" alt="HackToLive Logo" class="logo"></a>
+        <nav id="mainNav">
+            <a href="../pages/announcements.html">Announcements</a>
+            <a href="../pages/howitworks.html">How It Works</a>
+            <a href="../pages/resources.html">Learning Resources</a>
+            <a href="../pages/rules.html">Rules</a>
+            <a href="../pages/challenges.html">Challenges</a>
+            <a href="../pages/contact.html">Contact</a>
+        </nav>
+        <div class="auth-links">
+            <a href="login.html" class="btn small">Login</a>
+            <a href="register.html" class="btn small">Register</a>
+        </div>
+    </header>
+    <div class="login-container">
+<form id="loginForm">
+    <h2>Login</h2>
+    <label>Username <input type="text" id="username" required></label>
+    <label>Password <input type="password" id="password" required></label>
+    <div id="error" style="height:18px"><small></small></div>
+    <button type="submit">Login</button>
+    <a href="register.html">Create an account</a>
+    <a href="forgot-password.html">Forgot Password?</a>
+</form>
+</div>
+<script>
+function getRegistered(){
+    return JSON.parse(localStorage.getItem('registeredUsers')||'{}');
+}
+
+document.getElementById('loginForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const username=document.getElementById('username').value.trim();
+    const password=document.getElementById('password').value;
+    const error=document.getElementById('error').querySelector('small');
+    const users=getRegistered();
+    if(!users[username] || users[username].password!==password){
+        error.textContent='Invalid credentials';
+        return;
+    }
+    sessionStorage.setItem('ctfUser',username);
+    window.location.href='../index.html';
+});
+</script>
+</body>
+</html>

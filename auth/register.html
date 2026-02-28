@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration - HackToLive CTF</title>
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .register-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        form {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+            width: 500px
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            text-align: center;
+            color: #00ff00
+        }
+
+        input[type=text],
+        input[type=email],
+        input[type=password] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            background: #222;
+            color: #fff
+        }
+
+        label {
+            display: block;
+            margin-top: 8px
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #00ff00;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s
+        }
+
+        button:hover {
+            background: #00cc00
+        }
+
+        small {
+            color: #f88
+        }
+
+        form a {
+            color: #00ff00;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: block;
+            text-align: center;
+            margin-top: 10px
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="../index.html"><img src="../images/main-logo.png" alt="HackToLive Logo" class="logo"></a>
+        <nav id="mainNav">
+            <a href="../pages/announcements.html">Announcements</a>
+            <a href="../pages/howitworks.html">How It Works</a>
+            <a href="../pages/resources.html">Learning Resources</a>
+            <a href="../pages/rules.html">Rules</a>
+            <a href="../pages/challenges.html">Challenges</a>
+            <a href="../pages/contact.html">Contact</a>
+        </nav>
+        <div class="auth-links">
+            <a href="login.html" class="btn small">Login</a>
+            <a href="register.html" class="btn small">Register</a>
+        </div>
+    </header>
+    <div class="register-container">
+    <form id="regForm">
+        <h2>Register</h2>
+        <label>Name <input type="text" id="name" required></label>
+        <label>Email <input type="email" id="email" required></label>
+        <label>Username <input type="text" id="username" required></label>
+        <label>Password <input type="password" id="password" required></label>
+        <label>Security Question
+            <select id="securityQuestion" required
+                style="width:100%;padding:10px;margin:8px 0;border:1px solid #00ff00;border-radius:4px;background:#222;color:#fff">
+                <option value="" disabled selected>Select a question</option>
+                <option value="What is your favorite color?">What is your favorite color?</option>
+                <option value="What is your pet's name?">What is your pet's name?</option>
+                <option value="What city were you born in?">What city were you born in?</option>
+                <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                <option value="What was your first school?">What was your first school?</option>
+                <option value="What is your favorite book?">What is your favorite book?</option>
+            </select>
+        </label>
+        <label>Answer <input type="text" id="securityAnswer" placeholder="Answer to security question" required></label>
+        <label><input type="checkbox" id="terms"> I agree with Terms &amp; Conditions</label>
+        <div id="error" style="height:18px"><small></small></div>
+        <button type="submit">Create account</button>
+        <a href="login.html">Already have an account? Login</a>
+    </form>
+    </div>
+    <script>
+        function getRegistered() {
+            return JSON.parse(localStorage.getItem('registeredUsers') || '{}');
+        }
+
+        function saveRegistered(users) {
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+        }
+
+        document.getElementById('regForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const securityQuestion = document.getElementById('securityQuestion').value;
+            const securityAnswer = document.getElementById('securityAnswer').value.trim();
+            const terms = document.getElementById('terms').checked;
+            const error = document.getElementById('error').querySelector('small');
+            if (!terms) { error.textContent = 'You must agree to terms.'; return; }
+            if (!securityQuestion) { error.textContent = 'Please select a security question.'; return; }
+            if (!securityAnswer) { error.textContent = 'Please provide an answer to the security question.'; return; }
+            const users = getRegistered();
+            if (users[username]) { error.textContent = 'Username already taken.'; return; }
+            // ensure email unique
+            for (const u in users) { if (users[u].email === email) { error.textContent = 'Email already used.'; return; } }
+            users[username] = { name, email, password, securityQuestion, securityAnswer };
+            saveRegistered(users);
+            alert('Registration successful! Please login.');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+
+</html>

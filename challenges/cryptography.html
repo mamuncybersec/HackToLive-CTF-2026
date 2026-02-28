@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptography Challenges - HackToLive CTF</title>
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0d1f3c 0%, #1a2e5c 50%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #00ff00;
+            box-shadow: 0 10px 40px rgba(0, 255, 0, 0.3);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+            letter-spacing: 2px;
+        }
+        
+        header a {
+            color: #00ff00;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #00ff00;
+            color: #000;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #00cc00;
+        }
+        
+        .challenges-list {
+            display: grid;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .challenge-box {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .challenge-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 0, 0.2);
+        }
+        
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .challenge-box h3 {
+            color: #1e3c72;
+            font-size: 1.5em;
+        }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .points-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            background: #6c5ce7;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .difficulty-easy { background: #90EE90; color: #333; }
+        .difficulty-medium { background: #FFD700; color: #333; }
+        .difficulty-hard { background: #FF6B6B; color: white; }
+        
+        .encrypted-text {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            border-left: 3px solid #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #00ff00;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            background: #fff;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: #000;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.5);
+        }
+        
+        .hint {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 12px;
+            color: #856404;
+            font-size: 0.9em;
+        }
+        
+        .result-box {
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        .result-success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        
+        .result-error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        
+        .flag-display {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            text-shadow: 0 0 5px #00ff00;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔐 Cryptography Challenges</h1>
+        <p>Decode, decrypt, and break codes to capture the flag!</p>
+        <a href="#" onclick="history.back(); return false;">&larr; Back</a>
+    </header>
+    
+    <div class="container">
+        <a href="#" onclick="history.back(); return false;" class="back-btn">&larr; Back</a>
+        
+        <div class="challenges-list" id="challengesList"></div>
+    </div>
+
+    <script>
+        const challenges = [
+            {
+                id: 1,
+                title: 'Caesar Cipher',
+                description: 'Decode this Caesar cipher (shift by 3):',
+                encrypted: 'WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ',
+                answer: 'the quick brown fox jumps over the lazy dog',
+                hint: 'Try rotating each letter by different amounts',
+                difficulty: 'Easy',
+                points: 20
+            },
+            {
+                id: 2,
+                title: 'Base64 Encoding',
+                description: 'Decode this Base64 encoded string:',
+                encrypted: 'RmxhZ3s2MTNkYjBjYjk5NWMwN2E0ZTVlODczOTRlYzdiMDc5Nn0=',
+                answer: 'flag{613db0cb995c07a4e5e87394ec7b0796}',
+                hint: 'Use an online Base64 decoder or check the source',
+                difficulty: 'Easy',
+                points: 20
+            },
+            {
+                id: 3,
+                title: 'Simple XOR Cipher',
+                description: 'This string was XORed with key 42:',
+                encrypted: '57 15 10 13 43 25 27 16 16 27 16 51 05 13 04',
+                answer: 'crypto is awesome',
+                hint: 'XOR each byte with 42 to decode',
+                difficulty: 'Medium',
+                points: 30
+            },
+            {
+                id: 4,
+                title: 'Morse Code',
+                description: 'Decode this Morse code:',
+                encrypted: '.... . .-.. .-.. --- .-- --- .-. .-.. -..',
+                answer: 'helloworld',
+                hint: 'Dash = -, Dot = . Space = letter separator',
+                difficulty: 'Medium',
+                points: 30
+            },
+            {
+                id: 5,
+                title: 'ROT13 Cipher',
+                description: 'Decode this ROT13 encoded message:',
+                encrypted: 'Guvf vf n urn13 rapbqrq frethrg, gung\'f ubj lbh pnccgher gur synt!',
+                answer: 'this is a rot13 encoded request, that\'s how you capture the flag!',
+                hint: 'ROT13 is a Caesar cipher with rotation of 13',
+                difficulty: 'Easy',
+                points: 20
+            },
+            {
+                id: 6,
+                title: 'Substitution Cipher',
+                description: 'Crack this substitution cipher:',
+                encrypted: 'VHFXULWB LH WRB KHVWLRQ HQFBSWLRQ',
+                answer: 'security key test question encryption',
+                hint: 'Frequency analysis: E, T, A are most common',
+                difficulty: 'Hard',
+                points: 50
+            }
+        ];
+
+        function getUser(){
+            let u = sessionStorage.getItem('ctfUser');
+            if(!u){
+                u = prompt('Enter your username');
+                if(u) sessionStorage.setItem('ctfUser', u);
+            }
+            if(u){
+                const reg = JSON.parse(localStorage.getItem('registeredUsers')||'{}');
+                if(!reg[u]){
+                    alert('Username not registered. Redirecting to login.');
+                    sessionStorage.removeItem('ctfUser');
+                    window.location.href='../auth/login.html';
+                    return null;
+                }
+            }
+            return u;
+        }
+        function recordSolve(id, pts){
+            const u = getUser();
+            if(!u) return;
+            const users = JSON.parse(localStorage.getItem('ctfUsers')||'{}');
+            if(!users[u]) users[u]={solved:[],points:0};
+            if(!users[u].solved.includes(id)){
+                users[u].solved.push(id);
+                users[u].points += pts;
+                localStorage.setItem('ctfUsers', JSON.stringify(users));
+            }
+        }
+        function renderChallenges() {
+            const container = document.getElementById('challengesList');
+            container.innerHTML = '';
+            
+            challenges.forEach(challenge => {
+                const div = document.createElement('div');
+                div.className = 'challenge-box';
+                div.innerHTML = `
+                    <div class="challenge-header">
+                        <h3>${challenge.title}</h3>
+                        <span class="difficulty-badge difficulty-${challenge.difficulty.toLowerCase()}">
+                            ${challenge.difficulty}
+                        </span>
+                        <span class="points-badge">+${challenge.points} pts</span>
+                    </div>
+                    
+                    <p>${challenge.description}</p>
+                    
+                    <div class="encrypted-text">${challenge.encrypted}</div>
+                    
+                    <div class="form-group">
+                        <label>Your Answer:</label>
+                        <input type="text" id="answer-${challenge.id}" placeholder="Enter your decoded answer..." />
+                        <button class="btn" onclick="checkAnswer(${challenge.id})">Submit Answer</button>
+                    </div>
+                    
+                    <div id="result-${challenge.id}"></div>
+                    
+                    <div class="hint">
+                        💡 ${challenge.hint}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function checkAnswer(challengeId) {
+            const challenge = challenges.find(c => c.id === challengeId);
+            const userAnswer = document.getElementById(`answer-${challengeId}`).value.toLowerCase().trim();
+            const correctAnswer = challenge.answer.toLowerCase();
+            
+            const resultDiv = document.getElementById(`result-${challengeId}`);
+            const isCorrect = userAnswer === correctAnswer || userAnswer.includes(correctAnswer.split(' ')[0]);
+            
+            if (isCorrect) {
+                recordSolve(challengeId, challenge.points);
+                resultDiv.className = 'result-box result-success';
+                resultDiv.innerHTML = `✅ CORRECT! You captured the flag and earned +${challenge.points} points!
+                    <div class="flag-display">
+                        FLAG{${generateFlag(challenge.answer)}}
+                    </div>`;
+            } else {
+                resultDiv.className = 'result-box result-error';
+                resultDiv.innerHTML = `❌ Incorrect! Try again.<br><small>Your answer: ${userAnswer}</small>`;
+            }
+        }
+
+        function generateFlag(answer) {
+            let hash = 0;
+            for (let i = 0; i < answer.length; i++) {
+                const char = answer.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash).toString(16).substring(0, 16);
+        }
+
+        renderChallenges();
+    </script>
+<script src="../js/profile-widget.js"></script>
+</body>
+</html>

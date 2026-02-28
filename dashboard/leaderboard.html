@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - HackToLive CTF</title>
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1
+        }
+
+        .leaderboard-header {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 3px solid #00ff00;
+            box-shadow: 0 10px 50px rgba(0, 255, 0, 0.4), inset 0 1px 0 rgba(0, 255, 0, 0.2);
+            position: relative;
+            overflow: hidden
+        }
+
+        .leaderboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            opacity: 0.7
+        }
+
+        .leaderboard-header h1 {
+            font-size: 3em;
+            text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00, 0 0 60px #00aa00, 3px 3px 20px rgba(0, 0, 0, 0.8);
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            animation: glow 3s ease-in-out infinite
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00
+            }
+
+            50% {
+                text-shadow: 0 0 30px #00ff00, 0 0 50px #00ff00, 0 0 70px #00aa00
+            }
+
+            100% {
+                text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00
+            }
+        }
+
+        .leaderboard-header p {
+            color: #00ff00;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5)
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.05em;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.3), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+            cursor: pointer
+        }
+
+        button {
+            transition: all 0.3s
+        }
+
+        .back-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 0, 0.5), inset 0 -2px 0 rgba(0, 0, 0, 0.2)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            text-align: left
+        }
+
+        th {
+            background: #00ff00;
+            color: #000
+        }
+
+        tr:nth-child(even) {
+            background: rgba(0, 255, 0, 0.1)
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="../index.html"><img src="../images/main-logo.png" alt="HackToLive Logo" class="logo"></a>
+        <nav id="mainNav">
+            <a href="../pages/announcements.html">Announcements</a>
+            <a href="../pages/howitworks.html">How It Works</a>
+            <a href="../pages/resources.html">Learning Resources</a>
+            <a href="../pages/rules.html">Rules</a>
+            <a href="../pages/challenges.html">Challenges</a>
+            <a href="../pages/contact.html">Contact</a>
+        </nav>
+        <div class="auth-links">
+            <a href="../auth/login.html" class="btn small">Login</a>
+            <a href="../auth/register.html" class="btn small">Register</a>
+        </div>
+    </header>
+    <div class="leaderboard-header">
+        <h1>Leaderboard</h1>
+        <p>See top competitors</p>
+    </div>
+    <div class="container">
+        <a href="#" onclick="history.back(); return false;" class="back-btn">← BACK</a>
+        <div id="board"></div>
+    </div>
+    <script>
+        function renderLeaderboard() {
+            const users = JSON.parse(localStorage.getItem('ctfUsers') || '{}');
+            const entries = Object.entries(users).map(([name, data]) => ({ name, points: data.points, solved: data.solved.length }));
+            entries.sort((a, b) => b.points - a.points);
+            let html = '<table><tr><th>#</th><th>User</th><th>Points</th><th>Solved</th></tr>';
+            entries.forEach((e, i) => {
+                html += `<tr><td>${i + 1}</td><td>${e.name}</td><td>${e.points}</td><td>${e.solved}</td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('board').innerHTML = html;
+        }
+        renderLeaderboard();
+        setInterval(renderLeaderboard, 3000);
+    </script>
+    <script src="../js/profile-widget.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges - HackToLive CTF</title>
+    <link rel="icon" href="../images/logo.png" type="image/png">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <header>
+        <a href="../index.html"><img src="../images/main-logo.png" alt="Logo" class="logo" style="max-width:150px;"></a>
+        <nav id="mainNav">
+            <a href="../index.html">Home</a>
+            <a href="announcements.html">Announcements</a>
+            <a href="howitworks.html">How It Works</a>
+            <a href="resources.html">Resources</a>
+            <a href="rules.html">Rules</a>
+            <a href="challenges.html">Challenges</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <div class="auth-links">
+            <a href="../auth/login.html" class="btn small">Login</a>
+            <a href="../auth/register.html" class="btn small">Register</a>
+        </div>
+    </header>
+    <section id="hero">
+        <h1>🎯 Challenge Arena</h1>
+        <p>Test your cybersecurity skills across multiple domains</p>
+        <div class="stats-overview">
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Total Challenges</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1,450</div>
+                <div class="stat-label">Total Points</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">350+</div>
+                <div class="stat-label">Active Hackers</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <h2>🔍 Filter Challenges</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Challenges</button>
+                <button class="filter-btn" data-filter="easy">Easy</button>
+                <button class="filter-btn" data-filter="medium">Medium</button>
+                <button class="filter-btn" data-filter="hard">Hard</button>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 40px;">🏆 Available Challenges</h2>
+        <div class="challenges-grid">
+            <div class="challenge-card" data-difficulty="easy">
+                <div class="card-icon">🌐</div>
+                <h3>Web Exploitation</h3>
+                <p>Find vulnerabilities in web applications and capture the flag.</p>
+                <div class="card-meta">
+                    <span class="difficulty easy">Easy</span>
+                    <span class="points">50 pts</span>
+                    <span class="solves">👥 245 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/web-exploitation.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="medium">
+                <div class="card-icon">🔐</div>
+                <h3>Cryptography</h3>
+                <p>Decrypt messages and break codes to reveal hidden flags.</p>
+                <div class="card-meta">
+                    <span class="difficulty medium">Medium</span>
+                    <span class="points">100 pts</span>
+                    <span class="solves">👥 187 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/cryptography.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="hard">
+                <div class="card-icon">💾</div>
+                <h3>Binary Exploitation</h3>
+                <p>Analyze and exploit binary files to gain control.</p>
+                <div class="card-meta">
+                    <span class="difficulty hard">Hard</span>
+                    <span class="points">200 pts</span>
+                    <span class="solves">👥 89 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/binary-exploitation.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="medium">
+                <div class="card-icon">🔍</div>
+                <h3>Forensics</h3>
+                <p>Investigate digital evidence and recover hidden data.</p>
+                <div class="card-meta">
+                    <span class="difficulty medium">Medium</span>
+                    <span class="points">100 pts</span>
+                    <span class="solves">👥 156 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/forensics.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="hard">
+                <div class="card-icon">⚙️</div>
+                <h3>Reverse Engineering</h3>
+                <p>Disassemble and analyze code to understand functionality.</p>
+                <div class="card-meta">
+                    <span class="difficulty hard">Hard</span>
+                    <span class="points">200 pts</span>
+                    <span class="solves">👥 72 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/reverse-engineering.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="easy">
+                <div class="card-icon">🖼️</div>
+                <h3>Steganography</h3>
+                <p>Extract hidden messages from images and multimedia.</p>
+                <div class="card-meta">
+                    <span class="difficulty easy">Easy</span>
+                    <span class="points">50 pts</span>
+                    <span class="solves">👥 298 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/steganography.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="medium">
+                <div class="card-icon">🔑</div>
+                <h3>Password Cracking</h3>
+                <p>Break hashed passwords and weak encryption schemes.</p>
+                <div class="card-meta">
+                    <span class="difficulty medium">Medium</span>
+                    <span class="points">100 pts</span>
+                    <span class="solves">👥 203 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/password-cracking.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="hard">
+                <div class="card-icon">🌐</div>
+                <h3>Network Security</h3>
+                <p>Analyze network traffic and exploit vulnerabilities.</p>
+                <div class="card-meta">
+                    <span class="difficulty hard">Hard</span>
+                    <span class="points">200 pts</span>
+                    <span class="solves">👥 95 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/network-security.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="easy">
+                <div class="card-icon">📦</div>
+                <h3>SQL Injection</h3>
+                <p>Exploit database vulnerabilities to extract data.</p>
+                <div class="card-meta">
+                    <span class="difficulty easy">Easy</span>
+                    <span class="points">50 pts</span>
+                    <span class="solves">👥 312 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/sql-injection.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="hard">
+                <div class="card-icon">⬆️</div>
+                <h3>Privilege Escalation</h3>
+                <p>Gain elevated access and take control of the system.</p>
+                <div class="card-meta">
+                    <span class="difficulty hard">Hard</span>
+                    <span class="points">200 pts</span>
+                    <span class="solves">👥 67 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/privilege-escalation.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="medium">
+                <div class="card-icon">💬</div>
+                <h3>Social Engineering</h3>
+                <p>Manipulate targets through psychological techniques.</p>
+                <div class="card-meta">
+                    <span class="difficulty medium">Medium</span>
+                    <span class="points">100 pts</span>
+                    <span class="solves">👥 178 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/social-engineering.html'">Start Challenge</button>
+            </div>
+            <div class="challenge-card" data-difficulty="hard">
+                <div class="card-icon">📱</div>
+                <h3>Mobile Security</h3>
+                <p>Identify and exploit vulnerabilities in mobile apps.</p>
+                <div class="card-meta">
+                    <span class="difficulty hard">Hard</span>
+                    <span class="points">200 pts</span>
+                    <span class="solves">👥 54 solves</span>
+                </div>
+                <button class="btn" onclick="window.location.href='../challenges/mobile-security.html'">Start Challenge</button>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        /* Enhanced Hero Section */
+        #hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(13, 31, 60, 0.85)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23001122" width="1200" height="600"/><g fill="%2300ff00" opacity="0.05"><circle cx="100" cy="100" r="50"/><circle cx="300" cy="500" r="80"/><circle cx="900" cy="300" r="60"/><circle cx="1100" cy="100" r="70"/></g></svg>');
+            background-size: cover;
+            padding: 80px 20px 60px;
+            text-align: center;
+            color: #fff;
+            border-bottom: 3px solid #00ff00;
+            box-shadow: 0 10px 40px rgba(0, 255, 0, 0.2);
+        }
+
+        #hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        #hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #cccccc;
+        }
+
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00; }
+            50% { text-shadow: 0 0 30px #00ff00, 0 0 60px #00ff00; }
+        }
+
+        /* Stats Overview */
+        .stats-overview {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px 40px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(0, 255, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            color: #cccccc;
+            margin-top: 5px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            text-align: center;
+            margin: 40px 0 20px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 0, 0.2);
+        }
+
+        .filter-section h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            color: #ffffff;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: #000;
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        /* Enhanced Challenge Cards */
+        .card-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .challenge-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 0 20px rgba(0, 255, 0, 0.6));
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .solves {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            font-weight: bold;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .challenge-card.hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2em;
+            }
+
+            .stats-overview {
+                gap: 20px;
+            }
+
+            .stat-item {
+                padding: 15px 25px;
+            }
+
+            .stat-number {
+                font-size: 2em;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .challenge-card {
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .challenge-card:nth-child(1) { animation-delay: 0.1s; }
+        .challenge-card:nth-child(2) { animation-delay: 0.2s; }
+        .challenge-card:nth-child(3) { animation-delay: 0.3s; }
+        .challenge-card:nth-child(4) { animation-delay: 0.4s; }
+        .challenge-card:nth-child(5) { animation-delay: 0.5s; }
+        .challenge-card:nth-child(6) { animation-delay: 0.6s; }
+    </style>
+
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const challengeCards = document.querySelectorAll('.challenge-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    const filter = this.getAttribute('data-filter');
+
+                    challengeCards.forEach(card => {
+                        if (filter === 'all') {
+                            card.classList.remove('hidden');
+                            card.style.animation = 'fadeInUp 0.6s ease-out';
+                        } else {
+                            const difficulty = card.getAttribute('data-difficulty');
+                            if (difficulty === filter) {
+                                card.classList.remove('hidden');
+                                card.style.animation = 'fadeInUp 0.6s ease-out';
+                            } else {
+                                card.classList.add('hidden');
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <footer>
+        <p>Contact: <a href="mailto:support@hacktolive.ctf">support@hacktolive.ctf</a> | <a
+                href="https://discord.gg/yourserver" target="_blank">Discord</a></p>
+        <p><a href="rules.html">Rules & Code of Conduct</a> | <a href="resources.html">Resources</a> | <a
+                href="privacy.html">Privacy Policy</a></p>
+        <p>&copy; 2026 HackToLive CTF. All rights reserved.</p>
+    </footer>
+    <script src="../js/profile-widget.js"></script>
+</body>
+
+</html>

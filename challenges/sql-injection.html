@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>SQL Injection - HackToLive CTF</title><link rel="icon" href="../images/logo.png" type="image/png"><style>*{margin:0;padding:0}body{font-family:monospace;background:linear-gradient(135deg,#0d1f3c,#2a5298);min-height:100vh}header{background:#000;color:#fff;padding:30px;text-align:center;border-bottom:3px solid #0f0}h1{font-size:2.5em;text-shadow:0 0 20px #0f0}.container{max-width:1000px;margin:40px auto;padding:20px}.back{padding:10px 20px;background:#0f0;text-decoration:none;display:inline-block;margin-bottom:20px}.box{background:#fff;padding:20px;margin-bottom:20px}.box h3{color:#1e3c72}.b{display:inline-block;padding:5px 10px;border-radius:4px;font-size:.85em;font-weight:bold;margin-right:10px}.pts{background:#6c5ce7;color:#fff}.e{background:#1a1a1a;color:#0f0;padding:12px;margin:12px 0;border-left:2px solid #0f0;word-break:break-all}input{width:100%;padding:10px;border:2px solid #0f0;margin:8px 0}button{background:#0f0;padding:10px 20px;border:none;cursor:pointer}.ok{background:#d4edda;padding:10px;margin-top:10px}.no{background:#f8d7da;padding:10px;margin-top:10px}.h{background:#fff3cd;padding:10px;margin-top:10px;border-left:2px solid #ffc107}</style></head><body><header><h1>💉 SQL Injection</h1></header><div class="container"><a href="#" onclick="history.back(); return false;" class="back">&larr;</a><div id="l"></div></div><script>const c=[{id:1,title:'Basic SQLi',desc:'Bypass login',e:'WHERE user=\'admin\' AND pass=\'x\'',ans:'admin\' --',hint:'Comment out password',diff:'Easy',pts:35},{id:2,title:'Union SQLi',desc:'Extract column count',e:'SELECT id, name FROM products UNION SELECT 1,2',ans:'2',hint:'Match columns',diff:'Medium',pts:50},{id:3,title:'Blind SQLi',desc:'Extract via time',e:'if(substring(password,1,1)=\'a\') sleep(5);',ans:'time-based',hint:'Response times',diff:'Hard',pts:100}]; 
+
+// tracking helpers
+function getUser(){
+    let u = sessionStorage.getItem('ctfUser');
+    if(!u){
+        u = prompt('Enter your username');
+        if(u) sessionStorage.setItem('ctfUser', u);
+    }
+    if(u){
+        const reg = JSON.parse(localStorage.getItem('registeredUsers')||'{}');
+        if(!reg[u]){
+            alert('Username not registered. Redirecting to login.');
+            sessionStorage.removeItem('ctfUser');
+            window.location.href='../auth/login.html';
+            return null;
+        }
+    }
+    return u;
+}
+
+function recordSolve(id, pts){
+    const u = getUser();
+    if(!u) return;
+    let users = JSON.parse(localStorage.getItem('ctfUsers')||'{}');
+    if(!users[u]) users[u] = { solved: [], points: 0 };
+    if(!users[u].solved.includes(id)){
+        users[u].solved.push(id);
+        users[u].points += pts;
+        localStorage.setItem('ctfUsers', JSON.stringify(users));
+    }
+}
+
+function r(){document.getElementById('l').innerHTML=c.map(x=>`<div class="box"><h3>${x.title}</h3><span class="b" style="background:#${x.diff==='Easy'?'90EE90':x.diff==='Medium'?'FFD700':'FF6B6B'};color:${x.diff==='Hard'?'#fff':'#333'}">${x.diff}</span><span class="b pts">+${x.pts}</span><p>${x.desc}</p><div class="e">${x.e}</div><input id="a${x.id}" placeholder="Answer..."><button onclick="ch(${x.id})">Submit</button><div id="r${x.id}"></div><div class="h">💡 ${x.hint}</div></div>`).join('')}function ch(id){const x=c.find(i=>i.id===id);const a=document.getElementById(`a${id}`).value.toLowerCase();const d=document.getElementById(`r${id}`);const ok=a.includes(x.ans.toLowerCase());
+    if(ok){recordSolve(id, x.pts);}d.className=ok?'ok':'no';d.innerHTML=ok?`✅ +${x.pts}`:'❌'}r();</script><script src="../js/profile-widget.js"></script></body></html>
